@@ -10,7 +10,7 @@ app.use(express.static("dist"))
 app.use(cors({
     origin: process.env.NODE_ENV === "development"
         ? "http://localhost:5173"
-        : "live-server",
+        : process.env.LIVE_SERVER,
     credentials: true
 }))
 
