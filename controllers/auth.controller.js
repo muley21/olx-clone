@@ -150,7 +150,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
     if (!result) {
         return res.status(401).json({ message: "Email Not Found" })
     }
-    const verify = await bcrypt.compare(password)
+    const verify = await bcrypt.compare(password, result.password)
     if (!verify) {
         return res.status(401).json({ message: "Password Do Not Match" })
 
