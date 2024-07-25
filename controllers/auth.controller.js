@@ -109,3 +109,59 @@ exports.logoutAdmin = asyncHandler(async (req, res) => {
     res.clearCookie("admin")
     res.json({ message: "Admin Logout success" })
 })
+
+exports.registerUser = asyncHandler(async (req, res) => {
+    const { name, mobile, email, password, cpassword } = req.body
+    const { error, isError } = checkEmpty({
+        name, mobile, email, password, cpassword
+    })
+    if (isError) {
+        return res.status(400).json({ message: "All Fields Require", error })
+    }
+    if (!validator.isEmail(email)) { return res.status(400).json({ message: "Invalid Email" }) }
+    if (!validator.isMobilePhone(mobile, "en-IN")) { return res.status(400).json({ message: "Invalid Mobile" }) }
+    if (!validator.isStrongPassword(password)) { return res.status(400).json({ message: "Provide Strong Password" }) }
+    if (!validator.isStrongPassword(cpassword)) { return res.status(400).json({ message: "Provide Confirm Strong Password" }) }
+    if (password !== cpassword) { return res.status(400).json({ message: "Password Do not match" }) }
+
+    const hash = await bcrypt.hash(password, 10)
+
+    await User.create({ name, mobile, email, password: hash })
+
+    res.json({ message: "User Register Success" })
+})
+
+exports.loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body
+    const { error, isError } = checkEmpty({
+        email, password
+    })
+    if (isError) {
+        return res.status(400).json({ message: "All Fields Require", error })
+    }
+
+    const result = await User.findOne({ email })
+    if (!result) {
+        return res.status(401).json({ message: "Email Not Found" })
+    }
+    const verify = await bcrypt.compare(password)
+    if (!verify) {
+        return res.status(401).json({ message: "Password Do Not Match" })
+
+    }
+
+    const token = jwt.sign({ userId: result._id }, process.env.JWT_KEY, { expiresIn: "180d" })
+
+    res.cookie("user", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24 * 180
+    })
+    res.json({ message: "User Login Success" })
+})
+
+exports.logoutUser = asyncHandler(async (req, res) => {
+    res.clearCookie("User")
+    res.json({ message: "User Logout success" })
+})
+
