@@ -14,6 +14,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const { checkEmpty } = require("../utils/checkEmpty")
 const Admin = require("../models/Admin")
+const User = require("../models/User")
 const sendEmail = require("../utils/email")
 
 exports.registerAdmin = asyncHandler(async (req, res) => {
