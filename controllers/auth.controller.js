@@ -135,14 +135,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
     await User.create({ name, mobile, email, password: hash })
 
     res.json({
-        message: "User Register Success", result: {
-            _id: result._id,
-            name: result.name,
-            email: result.email,
-            mobile: result.mobile,
-            avatar: result.avatar,
-            verified: result.verified,
-        }
+        message: "User Register Success"
     })
 })
 
@@ -172,7 +165,16 @@ exports.loginUser = asyncHandler(async (req, res) => {
         secure: process.env.NODE_ENV === "production",
         maxAge: 1000 * 60 * 60 * 24 * 180
     })
-    res.json({ message: "User Login Success" })
+    res.json({
+        message: "User Login Success", result: {
+            _id: result._id,
+            name: result.name,
+            email: result.email,
+            mobile: result.mobile,
+            avatar: result.avatar,
+            verified: result.verified,
+        }
+    })
 })
 
 exports.logoutUser = asyncHandler(async (req, res) => {
