@@ -1,11 +1,12 @@
 const mongoose = require("mongoose")
 const express = require("express")
 const cors = require("cors")
-const coockieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser")
 require("dotenv").config()
 
 const app = express()
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.static("dist"))
 app.use(cors({
     origin: process.env.NODE_ENV === "development"
