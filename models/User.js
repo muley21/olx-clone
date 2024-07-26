@@ -16,11 +16,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    verified: {
+    emailVerified: {
         type: Boolean,
         default: false
     },
-    code: {
+    mobileVerified: {
+        type: Boolean,
+        default: false
+    },
+    emailCode: {
+        type: String,
+        // default: false
+    },
+    mobileCode: {
         type: String,
         // default: false
     },
