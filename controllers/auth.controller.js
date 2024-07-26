@@ -134,7 +134,16 @@ exports.registerUser = asyncHandler(async (req, res) => {
 
     await User.create({ name, mobile, email, password: hash })
 
-    res.json({ message: "User Register Success" })
+    res.json({
+        message: "User Register Success", result: {
+            _id: result._id,
+            name: result.name,
+            email: result.email,
+            mobile: result.mobile,
+            avatar: result.avatar,
+            verified: result.verified,
+        }
+    })
 })
 
 exports.loginUser = asyncHandler(async (req, res) => {
