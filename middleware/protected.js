@@ -6,7 +6,7 @@ exports.userProtected = (req, res, next) => {
         return res.status(401).json({ message: "No Cookie Found" })
 
     }
-    jwt.verify(user, process.env.JWT - KEY, (err, decode) => {
+    jwt.verify(user, process.env.JWT_KEY, (err, decode) => {
         if (err) {
             console.log(err)
             return res.status(401).json({ message: "JWT Error", error: err.message })
