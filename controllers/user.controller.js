@@ -32,6 +32,7 @@ exports.verifyEmailOTP = asyncHandler(async (req, res) => {
 
 exports.verifyUserMobile = asyncHandler(async (req, res) => {
     const result = await User.findById(req.loggedInUser)
+    // const { otp } = req.body
     const otp = Math.floor(10000 + Math.random() * 900000)
     await User.findByIdAndUpdate(req.loggedInUser, { mobileCode: otp })
     await sendSMS({
