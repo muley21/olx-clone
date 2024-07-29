@@ -1,6 +1,6 @@
 var unirest = require("unirest");
 
-const sendSMS = ({ message = "", numbers = "" }) => new Promise((resolve, reject) => {
+exports.sendSMS = ({ message = "", numbers = "" }) => new Promise((resolve, reject) => {
     var req = unirest("POST", "https://www.fast2sms.com/dev/bulkV2");
 
     req.headers({
