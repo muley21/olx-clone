@@ -85,13 +85,13 @@ exports.verifyMobileOTP = asyncHandler(async (req, res) => {
 })
 
 exports.addPost = asyncHandler(async (req, res) => {
-    const { title, desc, price, images, location } = req.body
-    const { error, isError } = checkEmpty({ title, desc, price, images, location })
+    const { title, desc, price, images, location, category } = req.body
+    const { error, isError } = checkEmpty({ title, desc, price, images, location, category })
     if (isError) {
         return res.status(400).json({ message: "All Fields Required", error })
     }
     // modify this code to support cloudinary
 
-    await Posts.create({ title, desc, price, images, location, user: req.loggedInUser })
+    await Posts.create({ title, desc, price, images, location, category, user: req.loggedInUser })
     return res.json({ message: "Post Create Success" })
 })
