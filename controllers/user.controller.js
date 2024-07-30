@@ -3,6 +3,7 @@ const User = require("../models/User")
 const sendEmail = require("../utils/email")
 const { sendSMS } = require("../utils/sms")
 const Posts = require("../models/Posts")
+const { checkEmpty } = require("../utils/checkEmpty")
 
 exports.verifyUserEmail = asyncHandler(async (req, res) => {
     console.log(req.loggedInUser)
