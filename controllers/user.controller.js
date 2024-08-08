@@ -5,6 +5,7 @@ const { sendSMS } = require("../utils/sms")
 const Posts = require("../models/Posts")
 const { checkEmpty } = require("../utils/checkEmpty")
 const upload = require("../utils/upload")
+const cloudinary = require("../utils/cloudinary.config")
 
 exports.verifyUserEmail = asyncHandler(async (req, res) => {
     console.log(req.loggedInUser)
@@ -112,10 +113,19 @@ exports.addPost = asyncHandler(async (req, res) => {
         }
 
         console.log(req.files)
+        const images = []
+        for (const item of req.files) {
+            const { secure_url } = await cloudinary.uploader.upload(item.path)
+            images.push(secure_url)
+        }
 
         // modify this code to support cloudinary
 
-        // await Posts.create({ title, desc, price, images, location, category, user: req.loggedInUser })
+        await Posts.create({ title, desc, price, images, location, category, user: req.loggedInUser })
         return res.json({ message: "Post Create Success" })
     })
+})
+exports.getAllPosts = asyncHandler(async (req, res) => {
+    const result = await Posts.find()
+    res.json({ message: "Post Get Success" })
 })
